@@ -2,6 +2,9 @@
 #include "ui_mainwindow.h"
 #include <QButtonGroup>
 #include <QMessageBox>
+#include <QDebug>
+#include "joystick.h"
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
 {
@@ -40,3 +43,16 @@ MainWindow::~MainWindow()
 
     delete ui;
 }
+
+void MainWindow::on_pushButton_clicked()
+{
+        hide();
+        joystick_panel = new joystick(this);
+        joystick_panel->show();
+
+        QObject::connect(joystick_panel, &joystick::joystickMoved, [](double xPercent, double yPercent) {
+                   qDebug() << "Joystick moved to:" << xPercent << yPercent;
+               });
+
+}
+
